@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="baseline.InventoryController">
    <center>
-      <TableView prefHeight="360.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="table" prefHeight="360.0" prefWidth="600.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="serialNumber" prefWidth="315.0" text="Serial Number" />
           <TableColumn fx:id="itemName" minWidth="0.0" prefWidth="375.0" text="Name" />
