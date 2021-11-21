@@ -24,9 +24,9 @@
    <bottom>
       <HBox prefHeight="28.0" prefWidth="613.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="inputSerial" onAction="#handleInputSerial" prefHeight="24.0" prefWidth="295.0" promptText="Serial Number" />
-            <TextField fx:id="inputName" onAction="#handleInputName" prefHeight="24.0" prefWidth="257.0" promptText="Name" />
-            <TextField fx:id="inputValue" onAction="#handleInputValue" prefHeight="24.0" prefWidth="112.0" promptText="Value" />
+            <TextField fx:id="inputSerial" prefHeight="24.0" prefWidth="295.0" promptText="Serial Number" />
+            <TextField fx:id="inputName" prefHeight="24.0" prefWidth="257.0" promptText="Name" />
+            <TextField fx:id="inputValue" prefHeight="24.0" prefWidth="112.0" promptText="Value" />
             <Button fx:id="addButton" mnemonicParsing="false" onAction="#handleAddButton" text="Add" />
             <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearchButton" text="Search" />
             <Separator prefWidth="70.0" />

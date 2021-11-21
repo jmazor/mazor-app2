@@ -1,0 +1,85 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class InventoryManagementApplication {
+    -mainStage : Stage
+    +start(stage)
+    +confirmCloseEventHandler() : EventHandler<WindowEvent>
+    +main()
+}
+
+class InventoryController implements Initializable{
+    -table : TableView<InventoryItem>
+    -serialNumber : TableColumn<InventoryItem, String>
+    -itemName : TableColumn<InventoryItem, String>
+    -itemValue : TableColumn<InventoryItem, String>
+    -inputName : TextField
+    -inputSerial : TextField
+    -inputValue : TextField
+    -addButton : Button
+    -searchButton : Button
+    -deleteButton : Button
+    -exportMenu : MenuItem
+    -importMenu : MenuItem
+    -clearMenu : MenuItem
+
+    +handleAddButton()
+    +handleSearchButton()
+    +handleDeleteButton()
+    +handleExport()
+    +handleImport()
+    +handleClear()
+    -setUpSerialNumber()
+    -setUpItemName()
+    -setUpItemValue()
+    -refreshItems()
+    -popupError(String)
+    +initialize()
+
+}
+
+Interface Initializable
+note left: JavaFX Interface
+
+class InventoryItem {
+    -serialNumber : String
+    -itemName : String
+    -itemValue : String
+
+    +InventoryItem()
+    +InventoryItem(serialNumber, itemName, itemValue)
+    +getSerialNumber() : String
+    +setSerialNumber(serialNumber)
+    +getItemName() : String
+    +setItemName(itemName)
+    +getItemValue() : String
+    +setItemValue(itemValue)
+
+
+}
+
+class InventoryList {
+    -dataList : ObservableList<InventoryItem>
+    +InventoryList()
+    +add(serialNumber, itemName, itemValue)
+    +setSerialNumber(InventoryItem, serialNumber)
+    +setItemName(InventoryItem, itemName)
+    +verifySerialNumber(inputSerial)
+    +setItemValue(InventoryItem, itemValue)
+    +searchList(serialNumber, itemName, itemValue) : ObservableList<InventoryItem>
+    +clearList()
+    +exportList(File)
+    -exportTSV(File)
+    -exportJson(File)
+    -exportHTML(File)
+    +importFile(File)
+    -importJson(File)
+    -importTSV(File)
+    -importHTML(File)
+
+}
+
+InventoryList o--> InventoryItem
+InventoryController o--> InventoryList
+
+@enduml
