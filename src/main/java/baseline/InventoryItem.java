@@ -2,7 +2,6 @@
  *  UCF COP3330 Fall 2021 Application Assignment 2 Solution
  *  Copyright 2021 Justin Mazor
  */
-
 package baseline;
 
 public class InventoryItem {
@@ -30,7 +29,7 @@ public class InventoryItem {
         // we do not test for individuality here
         // a hypothetical situation would be the application has multiple lists and therefore serials could be duplicated
         // testing will be done in InventoryList
-        if (serialNumber.matches("[a-zA-Z]-\\w{3}-\\w{3}-\\w{3}") == true)
+        if (serialNumber.matches("[a-zA-Z]-\\w{3}-\\w{3}-\\w{3}"))
             this.serialNumber = serialNumber;
         else
             throw new IllegalArgumentException("Serial must in A-XXX-XXX-XXX format");

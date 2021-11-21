@@ -7,11 +7,13 @@ package baseline;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -31,13 +33,17 @@ public class InventoryList {
 
 
     public void add(String serialNumber, String itemName, String itemValue) {
+        // confirm list size
         if (dataList.size() > 2000)
             throw new OutOfMemoryError();
+        // verify serial
         verifySerialNumber(serialNumber);
+        // add new input
         dataList.add(new InventoryItem(serialNumber, itemName, itemValue));
     }
 
     public void setSerialNumber(InventoryItem inputItem, String serialNumber) {
+        // verify serial before input
         verifySerialNumber(serialNumber);
         inputItem.setSerialNumber(serialNumber);
 
@@ -102,36 +108,73 @@ public class InventoryList {
     }
 
     // TODO fix getCanocialPath
+    // determines file type and calls appropriate function
     public void exportList(File fileName) throws IOException {
         String tempPath = fileName.getCanonicalPath().toLowerCase();
         if (tempPath.endsWith(".txt"))
             exportTSV(fileName);
         else if (tempPath.endsWith(".json"))
             exportJson(fileName);
+        else if (tempPath.endsWith(".html"))
+            exportHTML(fileName);
         else
             throw new IOException();
 
     }
 
-    private void exportTSV(File fileName){
+    private void exportHTML(File fileName) throws IOException {
+        try (FileWriter myWriter = new FileWriter(fileName)) {
+            String output = ("""
+                    <html>
+                    <head>
+                    <style>
+                    table, th, td {
+                      border:1px solid black;
+                    }
+                    </style>
+                    </head>
+                    <body>
+                    """);
+            output = output.concat("<table>\n<tbody>\n<tr>\n<th>Serial Number</th>\n<th>Item Name</td>\n<th>Value</td>\n</tr>\n");
+            for (InventoryItem item : dataList) {
+                // writes each item with a table
+                output = output.concat("<tr>\n<td>" + item.getSerialNumber() + "</td>\n<td>" + item.getItemName()+ "</td>\n<td>" + item.getItemValue() + "</td>\n</tr>\n");
+
+            }
+            output = output.concat("</tbody>\n</table>\n");
+            output = output.concat("</body>\n</html>\n");
+            Document doc = Jsoup.parse(output);
+            myWriter.write(String.valueOf(doc));
+        } catch (Exception e) {
+            throw new IOException();
+        }
+
+    }
+
+    private void exportTSV(File fileName) throws IOException {
+        // write to a file
         try (FileWriter myWriter = new FileWriter(fileName)) {
             for (InventoryItem item : dataList) {
+                // writes each item with a table
                 myWriter.write(item.getSerialNumber() + "\t");
                 myWriter.write(item.getItemName() + "\t");
                 myWriter.write(item.getItemValue() + "\n");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
 
     public void importFile(File fileName) throws IOException {
+        // determines filetype
         String tempPath = fileName.getCanonicalPath().toLowerCase();
         clearList();
+        // call appropriate function
         if (tempPath.endsWith(".txt"))
             importTSV(fileName);
-        if (tempPath.endsWith(".json"))
+        else if (tempPath.endsWith(".json"))
             importJson(fileName);
+        else if(tempPath.endsWith(".html"))
+            importHTML(fileName);
         else
             throw new IOException();
     }
@@ -141,13 +184,16 @@ public class InventoryList {
 
         try (BufferedReader jsonFile = new BufferedReader(new FileReader(fileName))) {
             String input = "";
+            // reads file and stores as a string
             String dataRow = jsonFile.readLine();
             while (dataRow != null) {
                 input = input.concat(dataRow);
                 dataRow = jsonFile.readLine();
             }
             Type listType = new TypeToken<ArrayList<InventoryItem>>(){}.getType();
+            // deserialize json
             ArrayList<InventoryItem> tempList = gson.fromJson(input, listType);
+            // verify data and put in dataList
             for (InventoryItem item : tempList) {
                 // JSON does not use my constructor so we will temporarily have duplicates
                 add(item.getSerialNumber(), item.getItemName(), item.getItemValue());
@@ -187,6 +233,28 @@ public class InventoryList {
             gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(tempList, writer);
         }
+    }
+
+    private void importHTML(File fileName) throws IOException {
+        try (BufferedReader htmlFile = new BufferedReader(new FileReader(fileName))) {
+            String input = "";
+            // reads file and stores as a string
+            String dataRow = htmlFile.readLine();
+            while (dataRow != null) {
+                input = input.concat(dataRow);
+                dataRow = htmlFile.readLine();
+            }
+            Document doc = Jsoup.parse(input);
+            Element table = doc.select("table").get(0);
+            Elements rows = table.select("tr");
+            for (int i = 1; i < rows.size(); ++i) {
+                Element row = rows.get(i);
+                Elements cols = row.select("td");
+                add(cols.get(0).text(), cols.get(1).text(), cols.get(2).text());
+            }
+        }
+
+
     }
 
 }
