@@ -24,7 +24,7 @@
    <bottom>
       <HBox prefHeight="28.0" prefWidth="613.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="inputSerial" prefHeight="24.0" prefWidth="295.0" promptText="Serial Number" />
+            <TextField fx:id="inputSerial" prefHeight="24.0" prefWidth="295.0" promptText="Serial Number | A-XXX-XXX-XXX" />
             <TextField fx:id="inputName" prefHeight="24.0" prefWidth="257.0" promptText="Name" />
             <TextField fx:id="inputValue" prefHeight="24.0" prefWidth="112.0" promptText="Value" />
             <Button fx:id="addButton" mnemonicParsing="false" onAction="#handleAddButton" text="Add" />
@@ -42,11 +42,6 @@
                   <MenuItem fx:id="exportMenu" mnemonicParsing="false" onAction="#handleExport" text="Export Data" />
                   <MenuItem fx:id="importMenu" mnemonicParsing="false" onAction="#handleImport" text="Import Data" />
               <MenuItem fx:id="clearMenu" mnemonicParsing="false" onAction="#handleClear" text="Clear Data" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem fx:id="aboutMenu" mnemonicParsing="false" onAction="#handleAbout" text="About" />
             </items>
           </Menu>
         </menus>

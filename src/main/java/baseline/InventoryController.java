@@ -57,8 +57,6 @@ public class InventoryController implements Initializable {
     @FXML
     private MenuItem clearMenu;
 
-    @FXML
-    private MenuItem aboutMenu;
 
 
     @FXML
@@ -80,6 +78,9 @@ public class InventoryController implements Initializable {
     @FXML
     public void handleSearchButton() {
         table.setItems(inventoryList.searchList(inputSerial.getCharacters().toString(), inputName.getCharacters().toString(), inputValue.getCharacters().toString()));
+        inputSerial.clear();
+        inputName.clear();
+        inputValue.clear();
     }
 
     @FXML
@@ -88,7 +89,6 @@ public class InventoryController implements Initializable {
         refreshItems();
     }
 
-    // TODO Try catch getCanonicalPath
     @FXML
     public void handleExport() throws IOException {
         FileChooser fileChooser = new FileChooser();
@@ -99,21 +99,21 @@ public class InventoryController implements Initializable {
                 new FileChooser.ExtensionFilter("HTML", "*.html")
         );
         File file = fileChooser.showSaveDialog(table.getScene().getWindow());
-        if (file != null) {
-            File f;
-            String tempPath = file.getCanonicalPath().toLowerCase();
-            if (!(tempPath.endsWith(".txt") || tempPath.endsWith(".json") || tempPath.endsWith(".html")))
-            {
-                String extension = fileChooser.selectedExtensionFilterProperty().get().getExtensions().get(0).substring(1);
-                f = new File(file.getCanonicalPath() + extension);
+        try {
+            if (file != null) {
+                File f;
+                String tempPath = file.getCanonicalPath().toLowerCase();
+                if (!(tempPath.endsWith(".txt") || tempPath.endsWith(".json") || tempPath.endsWith(".html"))) {
+                    String extension = fileChooser.selectedExtensionFilterProperty().get().getExtensions().get(0).substring(1);
+                    f = new File(file.getCanonicalPath() + extension);
+                } else {
+                    f = file.getCanonicalFile();
+                }
+                inventoryList.exportList(f);
             }
-            else
-            {
-                f = file.getCanonicalFile();
-            }
-            inventoryList.exportList(f);
+        } catch (Exception e) {
+            popupError("File is Invalid or Corrupted");
         }
-
     }
 
     @FXML
@@ -131,7 +131,8 @@ public class InventoryController implements Initializable {
             try {
                 inventoryList.importFile(file);
             } catch (Exception e) {
-                popupError("Invalid or Corrupted File");
+                inventoryList.clearList();
+                popupError("File is Invalid or Corrupted");
             }
         }
     }
@@ -143,10 +144,6 @@ public class InventoryController implements Initializable {
         inputSerial.clear();
         inputName.clear();
         inputValue.clear();
-    }
-
-    @FXML
-    public void handleAbout() {
     }
 
     private void setUpSerialNumber() {

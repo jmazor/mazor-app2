@@ -4,9 +4,16 @@
  */
 package baseline;
 
+import com.google.gson.annotations.SerializedName;
+import java.math.BigDecimal;
+import java.util.Locale;
+
 public class InventoryItem {
+    @SerializedName(value = "serialNumber")
     private String serialNumber;
+    @SerializedName(value = "itemName")
     private String itemName;
+    @SerializedName(value = "itemValue")
     private String itemValue;
 
     public InventoryItem() {
@@ -30,13 +37,12 @@ public class InventoryItem {
         // a hypothetical situation would be the application has multiple lists and therefore serials could be duplicated
         // testing will be done in InventoryList
         if (serialNumber.matches("[a-zA-Z]-\\w{3}-\\w{3}-\\w{3}"))
-            this.serialNumber = serialNumber;
+            this.serialNumber = serialNumber.toUpperCase(Locale.ROOT);
         else
             throw new IllegalArgumentException("Serial must in A-XXX-XXX-XXX format");
 
 
     }
-
 
     public String getItemName() {
         return itemName;
@@ -66,15 +72,15 @@ public class InventoryItem {
         if (itemValue.charAt(0) == '$') {
             itemValue = itemValue.substring(1);
         }
-        double temp;
+        BigDecimal temp;
         // I know this is junk but I want to control exceptions
         try {
-            temp = Double.parseDouble(itemValue);
+            temp = new BigDecimal(itemValue);
         }
         catch (Exception e) {
             throw new IllegalArgumentException("Value must be a valid number");
         }
-        if (temp < 0)
+        if (temp.compareTo((BigDecimal.ZERO)) < 0)
             throw new IllegalArgumentException("Value must be greater than or equal to zero");
         itemValue = "$".concat(itemValue);
         int index = itemValue.indexOf('.');

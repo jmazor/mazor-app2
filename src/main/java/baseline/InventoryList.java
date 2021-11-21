@@ -5,8 +5,7 @@
 
 package baseline;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -58,7 +57,7 @@ public class InventoryList {
         // if serialNumber matches another throw exception
         // else return
         for (InventoryItem item: dataList) {
-            if (item.getSerialNumber().toLowerCase(Locale.ROOT).equals(inputSerial.toLowerCase(Locale.ROOT)))
+            if (item.getSerialNumber().toUpperCase(Locale.ROOT).equals(inputSerial.toUpperCase(Locale.ROOT)))
                 throw new IllegalArgumentException("Serial Number must be unique");
         }
     }
@@ -76,7 +75,7 @@ public class InventoryList {
         // if itemName is not blank
         // remove every item that does not contain itemName
         if(!serialNumber.isBlank()) {
-            searchList.removeIf(searchItem -> !searchItem.getSerialNumber().toLowerCase(Locale.ROOT).contains(serialNumber.toLowerCase(Locale.ROOT)));
+            searchList.removeIf(searchItem -> !searchItem.getSerialNumber().toUpperCase(Locale.ROOT).contains(serialNumber.toUpperCase(Locale.ROOT)));
         }
         if(!itemName.isBlank()) {
             searchList.removeIf(searchItem -> !searchItem.getItemName().toLowerCase(Locale.ROOT).contains(itemName.toLowerCase(Locale.ROOT)));
@@ -107,7 +106,6 @@ public class InventoryList {
         dataList.remove(item);
     }
 
-    // TODO fix getCanocialPath
     // determines file type and calls appropriate function
     public void exportList(File fileName) throws IOException {
         String tempPath = fileName.getCanonicalPath().toLowerCase();
@@ -145,8 +143,6 @@ public class InventoryList {
             output = output.concat("</body>\n</html>\n");
             Document doc = Jsoup.parse(output);
             myWriter.write(String.valueOf(doc));
-        } catch (Exception e) {
-            throw new IOException();
         }
 
     }
@@ -192,19 +188,15 @@ public class InventoryList {
             }
             Type listType = new TypeToken<ArrayList<InventoryItem>>(){}.getType();
             // deserialize json
-            ArrayList<InventoryItem> tempList = gson.fromJson(input, listType);
+            JsonObject jsonObject = gson.fromJson(input, JsonObject.class);
+            JsonArray jsonArray = jsonObject.get("Inventory").getAsJsonArray();
+            ArrayList<InventoryItem> tempList = gson.fromJson(jsonArray, listType);
             // verify data and put in dataList
             for (InventoryItem item : tempList) {
                 // JSON does not use my constructor so we will temporarily have duplicates
                 add(item.getSerialNumber(), item.getItemName(), item.getItemValue());
             }
-
-
-        } catch (Exception e) {
-            throw new IOException();
         }
-
-
     }
 
     private void importTSV(File fileName) throws IOException {
@@ -221,19 +213,29 @@ public class InventoryList {
                 add(dataArray.get(0), dataArray.get(1), dataArray.get(2));
                 dataRow = tsvFile.readLine(); // Read next line of data.
             }
-        } catch (Exception e) {
-            throw new IllegalArgumentException();
         }
     }
 
     private void exportJson(File fileName) throws IOException {
         Gson gson = new Gson();
-        ArrayList<InventoryItem> tempList = new ArrayList<>(dataList);
+        Type listType = new TypeToken<ArrayList<InventoryItem>>(){}.getType();
+        // Put in ArrayList to allow gson to deal with
+        ArrayList<InventoryItem> tempList =  new ArrayList<>(dataList);
+        // create an element
+        JsonElement element = gson.toJsonTree(tempList, listType);
+        // create a JsonArray
+        JsonArray jsonArray = element.getAsJsonArray();
+        // create an Object
+        JsonObject test = new JsonObject();
+        // add Item to Object
+        test.add("Inventory", jsonArray);
         try (Writer writer = new FileWriter(fileName)) {
             gson = new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(tempList, writer);
+            gson.toJson(test, writer);
         }
     }
+
+
 
     private void importHTML(File fileName) throws IOException {
         try (BufferedReader htmlFile = new BufferedReader(new FileReader(fileName))) {
@@ -253,9 +255,6 @@ public class InventoryList {
                 add(cols.get(0).text(), cols.get(1).text(), cols.get(2).text());
             }
         }
-
-
     }
-
 }
 
