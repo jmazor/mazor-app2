@@ -58,7 +58,6 @@ public class InventoryController implements Initializable {
     private MenuItem clearMenu;
 
 
-
     @FXML
     public void handleAddButton() {
         try {
@@ -68,8 +67,6 @@ public class InventoryController implements Initializable {
             inputValue.clear();
         } catch (IllegalArgumentException e) {
             popupError(e.getMessage());
-        } catch (OutOfMemoryError e) {
-            popupError("List can not be greater than 2000 items");
         }
         refreshItems();
 

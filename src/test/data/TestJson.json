@@ -1,0 +1,14 @@
+{
+  "Inventory": [
+    {
+      "serialNumber": "X-123-12S-21F",
+      "itemName": "one",
+      "itemValue": "$123.12"
+    },
+    {
+      "serialNumber": "Y-1DE-3FW-FE3",
+      "itemName": "two",
+      "itemValue": "$3423.10"
+    }
+  ]
+}

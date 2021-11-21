@@ -69,28 +69,57 @@ public class InventoryItem {
         //  value should be not 0
         if (itemValue.isBlank())
             throw new IllegalArgumentException("Value must exist");
+        // removes $ if exists
         if (itemValue.charAt(0) == '$') {
             itemValue = itemValue.substring(1);
         }
         BigDecimal temp;
-        // I know this is junk but I want to control exceptions
+        // ensures is a valid decimal
         try {
             temp = new BigDecimal(itemValue);
         }
         catch (Exception e) {
             throw new IllegalArgumentException("Value must be a valid number");
         }
+        // ensures decimal is greater than or equal to zero
         if (temp.compareTo((BigDecimal.ZERO)) < 0)
             throw new IllegalArgumentException("Value must be greater than or equal to zero");
+        this.itemValue = formatItemValue(itemValue);
+    }
+
+    private static String formatItemValue(String itemValue) {
+        // adds $ back
         itemValue = "$".concat(itemValue);
+        // finds index of decimal
         int index = itemValue.indexOf('.');
+        // if decimal exists
         if (index != -1) {
-            itemValue = itemValue.substring(0, index + 3);
-        } else {
+            // if no value after decimal
+            if (itemValue.length() == index + 1)
+                itemValue = itemValue.concat("00");
+            // if one decimal
+            else if (itemValue.length() == index + 2)
+                itemValue = itemValue.concat("0");
+            // if more than 1 decimal
+            else {
+                itemValue = itemValue.substring(0, index + 3);
+            }
+        } else {  // if decimal doesn't exist
             itemValue = itemValue.concat(".00");
         }
+        return itemValue;
+    }
 
-        this.itemValue = itemValue;
+    public boolean compare(InventoryItem item) {
+        boolean flag = true;
+        if (!this.getSerialNumber().equals(item.getSerialNumber()))
+            flag  = false;
+        if (!this.getItemValue().equals(item.getItemValue()))
+            flag = false;
+        if (!this.getItemName().equals(item.getItemName()))
+            flag = false;
+
+        return flag;
     }
 
 }

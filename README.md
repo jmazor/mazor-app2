@@ -5,13 +5,13 @@ The application should be fairly intuitive, but please visit this file for speci
 ## Import List 
 
 **Json** 
-  - File -> Import Data -> Select a valid .json file
+  - File -> Import Data -> Write a valid .json file
 
 **HTML**
-   - File -> Import Data -> Select a valid .html file
+   - File -> Import Data -> Write a valid .html file
 
 **TSV**
-   - File -> Import Data -> Select a valid .txt file
+   - File -> Import Data -> Write a valid .txt file
 
 
 ## Export List

@@ -31,10 +31,10 @@ public class InventoryList {
     }
 
 
-    public void add(String serialNumber, String itemName, String itemValue) {
+    public void add(String serialNumber, String itemName, String itemValue)  {
         // confirm list size
-        if (dataList.size() > 2000)
-            throw new OutOfMemoryError();
+        if (dataList.size() >= 2000)
+            throw new IllegalArgumentException("List can not be greater than 2000 items");
         // verify serial
         verifySerialNumber(serialNumber);
         // add new input
@@ -52,7 +52,7 @@ public class InventoryList {
         inputItem.setItemName(itemName);
     }
 
-    public void verifySerialNumber(String inputSerial) {
+    private void verifySerialNumber(String inputSerial) {
         // loop through dataList
         // if serialNumber matches another throw exception
         // else return

@@ -54,6 +54,8 @@ class InventoryItem {
     +setItemName(itemName)
     +getItemValue() : String
     +setItemValue(itemValue)
+    -formatItemValue(itemValue) : String
+    +compare(InventoryItem) : boolean
 
 
 }
@@ -64,7 +66,7 @@ class InventoryList {
     +add(serialNumber, itemName, itemValue)
     +setSerialNumber(InventoryItem, serialNumber)
     +setItemName(InventoryItem, itemName)
-    +verifySerialNumber(inputSerial)
+    -verifySerialNumber(inputSerial)
     +setItemValue(InventoryItem, itemValue)
     +searchList(serialNumber, itemName, itemValue) : ObservableList<InventoryItem>
     +clearList()
