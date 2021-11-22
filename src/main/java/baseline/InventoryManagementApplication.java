@@ -26,7 +26,7 @@ public class InventoryManagementApplication extends javafx.application.Applicati
         public void start(Stage stage) throws IOException {
             this.mainStage = stage;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Inventory.fxml"));
-            Parent root = (Parent)fxmlLoader.load();
+            Parent root = fxmlLoader.load();
             // init and show table
             Scene scene = new Scene(root, 900, 600);
 

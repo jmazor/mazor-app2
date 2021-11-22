@@ -1,5 +1,5 @@
 # Mazor's Inventory Application
-The following contains instructions on how to this application.
+The following contains instructions on how to operate this Inventory Application.
 The application should be fairly intuitive, but please visit this file for specific instructions.
 
 ## Import List 
@@ -55,5 +55,9 @@ Double-click on field and hit enter when done editing
 
 Type search fields in text fields on bottom
 Hit search when done
-* Search finds all fields that contains the values searched
+* Results in all fields that contains the values searched
 * Search is case-insensitive
+
+## Sort Items
+
+Click the column header of the value you would like to sort by

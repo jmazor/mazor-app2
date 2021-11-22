@@ -88,12 +88,16 @@ public class InventoryItem {
     }
 
     private static String formatItemValue(String itemValue) {
-        // adds $ back
-        itemValue = "$".concat(itemValue);
         // finds index of decimal
         int index = itemValue.indexOf('.');
         // if decimal exists
         if (index != -1) {
+            // add a zero in front if nothing exists
+            if (index == 0) {
+                itemValue = "0".concat(itemValue);
+                // index of decimal has changed
+                ++index;
+            }
             // if no value after decimal
             if (itemValue.length() == index + 1)
                 itemValue = itemValue.concat("00");
@@ -107,13 +111,25 @@ public class InventoryItem {
         } else {  // if decimal doesn't exist
             itemValue = itemValue.concat(".00");
         }
+
+        // remove leading zeros
+        itemValue = removeLeadingZeros(itemValue);
+        // adds $ back
+        itemValue = "$".concat(itemValue);
+        return itemValue;
+    }
+
+    private static String removeLeadingZeros(String itemValue) {
+        itemValue = itemValue.replaceFirst("^0+(?!$)", "");
+        // if we removed a necessary zero add it back
+        if (itemValue.indexOf('.') == 0)
+            itemValue = "0".concat(itemValue);
+
         return itemValue;
     }
 
     public boolean compare(InventoryItem item) {
-        boolean flag = true;
-        if (!this.getSerialNumber().equals(item.getSerialNumber()))
-            flag  = false;
+        boolean flag = this.getSerialNumber().equals(item.getSerialNumber());
         if (!this.getItemValue().equals(item.getItemValue()))
             flag = false;
         if (!this.getItemName().equals(item.getItemName()))

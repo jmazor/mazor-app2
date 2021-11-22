@@ -70,7 +70,7 @@ class InventoryListTest {
     }
 
     @Test
-    void setSerialNumberSuc() {
+    void setSerialNumberSuccess() {
         InventoryList testList = new InventoryList();
         testList.add("a-123-123-123", "test", "12");
         testList.add("b-123-123-123", "test", "14");
@@ -83,7 +83,7 @@ class InventoryListTest {
     void setItemName() {
         InventoryList testList = new InventoryList();
         testList.add("a-123-123-123", "test", "12");
-        // we have already ensured the name size in InventoryItemtest
+        // we have already ensured the name size in InventoryItemTest
         testList.setItemName(testList.getDataList().get(0), "new");
         assertEquals("new", testList.getDataList().get(0).getItemName());
     }
@@ -276,9 +276,7 @@ class InventoryListTest {
         } catch (Exception e) {
             fail();
         }
-        boolean flag = true;
-        if (testList.getDataList().size() != 2)
-            flag = false;
+        boolean flag = testList.getDataList().size() == 2;
         if (!testList.getDataList().get(0).compare(new InventoryItem("A-123-123-123", "one", "$12.67")))
             flag = false;
         if (!testList.getDataList().get(1).compare(new InventoryItem("B-123-123-123", "two", "$35.12")))
@@ -297,9 +295,7 @@ class InventoryListTest {
         } catch (Exception e) {
             fail();
         }
-        boolean flag = true;
-        if (testList.getDataList().size() != 2)
-            flag = false;
+        boolean flag = testList.getDataList().size() == 2;
         if (!testList.getDataList().get(0).compare(new InventoryItem("A-123-12S-21F", "one", "$8091.10")))
             flag = false;
         if (!testList.getDataList().get(1).compare(new InventoryItem("B-1DE-3FW-FE3", "two", "$123.10")))
@@ -318,9 +314,7 @@ class InventoryListTest {
         } catch (Exception e) {
             fail();
         }
-        boolean flag = true;
-        if (testList.getDataList().size() != 2)
-            flag = false;
+        boolean flag = testList.getDataList().size() == 2;
         if (!testList.getDataList().get(0).compare(new InventoryItem("X-123-12S-21F", "one", "$123.12")))
             flag = false;
         if (!testList.getDataList().get(1).compare(new InventoryItem("Y-1DE-3FW-FE3", "two", "$3423.10")))

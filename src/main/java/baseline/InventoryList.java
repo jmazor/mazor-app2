@@ -16,10 +16,7 @@ import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class InventoryList {
     // Data

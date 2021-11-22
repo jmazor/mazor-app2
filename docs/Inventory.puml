@@ -55,6 +55,7 @@ class InventoryItem {
     +getItemValue() : String
     +setItemValue(itemValue)
     -formatItemValue(itemValue) : String
+    -removeLeadingZeros(itemValue) : String
     +compare(InventoryItem) : boolean
 
 

@@ -12,8 +12,9 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 public class InventoryController implements Initializable {
@@ -87,7 +88,7 @@ public class InventoryController implements Initializable {
     }
 
     @FXML
-    public void handleExport() throws IOException {
+    public void handleExport() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(
@@ -111,6 +112,7 @@ public class InventoryController implements Initializable {
         } catch (Exception e) {
             popupError("File is Invalid or Corrupted");
         }
+        refreshItems();
     }
 
     @FXML
@@ -132,6 +134,7 @@ public class InventoryController implements Initializable {
                 popupError("File is Invalid or Corrupted");
             }
         }
+        refreshItems();
     }
 
     @FXML
@@ -141,6 +144,7 @@ public class InventoryController implements Initializable {
         inputSerial.clear();
         inputName.clear();
         inputValue.clear();
+
     }
 
     private void setUpSerialNumber() {
@@ -183,12 +187,23 @@ public class InventoryController implements Initializable {
             }
             refreshItems();
         });
+
+        Comparator<String> itemComparator = (o1, o2) -> {
+            String firstString = o1.substring(1);
+            String secondString  = o2.substring(1);
+            BigDecimal testOne = new BigDecimal(firstString);
+            BigDecimal testTwo = new BigDecimal(secondString);
+            return testOne.compareTo(testTwo);
+        };
+        itemValue.setComparator(itemComparator);
+
     }
 
     private void refreshItems() {
         table.setItems(inventoryList.getDataList());
         table.refresh();
     }
+
 
     private void popupError(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -198,6 +213,7 @@ public class InventoryController implements Initializable {
         alert.showAndWait();
     }
 
+
     @Override
         public void initialize(URL location, ResourceBundle resources) {
         inventoryList = new InventoryList();
@@ -206,5 +222,6 @@ public class InventoryController implements Initializable {
         setUpItemName();
         setUpItemValue();
         table.setItems(inventoryList.getDataList());
+
     }
 }

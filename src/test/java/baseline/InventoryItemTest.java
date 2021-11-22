@@ -11,7 +11,7 @@ import java.util.Locale;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryItemTest {
-    
+
     @Test
     void setSerialNumberSuccess() {
         InventoryItem test = new InventoryItem();
@@ -114,9 +114,7 @@ class InventoryItemTest {
         InventoryItem test = new InventoryItem("a-123-123-123", "test", "12");
 
         // tests constructor
-        boolean flag = true;
-        if (!test.getSerialNumber().equals("A-123-123-123".toUpperCase(Locale.ROOT)))
-            flag = false;
+        boolean flag = test.getSerialNumber().equals("A-123-123-123".toUpperCase(Locale.ROOT));
         if (!test.getItemName().equals("test"))
             flag = false;
         if (!test.getItemValue().equals("$12.00"))
