@@ -9,7 +9,7 @@ class InventoryManagementApplication {
 }
 
 class InventoryController implements Initializable{
-    -inventoryList : inventoryList
+    -inventoryList : InventoryList
     -table : TableView<InventoryItem>
     -serialNumber : TableColumn<InventoryItem, String>
     -itemName : TableColumn<InventoryItem, String>

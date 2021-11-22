@@ -102,7 +102,7 @@ class InventoryListTest {
         InventoryList testList = new InventoryList();
         testList.add("a-123-123-123", "test", "12");
         testList.add("b-123-123-123", "test", "12");
-        ObservableList<InventoryItem> searchList = testList.searchList("b", "", null);
+        ObservableList<InventoryItem> searchList = testList.searchList("b", "", "");
         if (searchList.size() > 1)
             fail();
         else {
