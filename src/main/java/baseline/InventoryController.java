@@ -62,11 +62,14 @@ public class InventoryController implements Initializable {
     @FXML
     public void handleAddButton() {
         try {
+            // call add function
             inventoryList.add(inputSerial.getCharacters().toString(), inputName.getCharacters().toString(), inputValue.getCharacters().toString());
             inputSerial.clear();
             inputName.clear();
             inputValue.clear();
+            // clear fields
         } catch (IllegalArgumentException e) {
+            // popup error
             popupError(e.getMessage());
         }
         refreshItems();
@@ -75,15 +78,18 @@ public class InventoryController implements Initializable {
 
     @FXML
     public void handleSearchButton() {
+        // call searchList
         table.setItems(inventoryList.searchList(inputSerial.getCharacters().toString(), inputName.getCharacters().toString(), inputValue.getCharacters().toString()));
         inputSerial.clear();
         inputName.clear();
         inputValue.clear();
+        // clear fields
     }
 
     @FXML
     public void handleDeleteButton() {
         inventoryList.delete(table.getSelectionModel().getSelectedItem());
+        // call delete
         refreshItems();
     }
 
@@ -98,6 +104,7 @@ public class InventoryController implements Initializable {
         );
         File file = fileChooser.showSaveDialog(table.getScene().getWindow());
         try {
+            // ensure filename has proper extension
             if (file != null) {
                 File f;
                 String tempPath = file.getCanonicalPath().toLowerCase();
@@ -107,6 +114,7 @@ public class InventoryController implements Initializable {
                 } else {
                     f = file.getCanonicalFile();
                 }
+                // export list
                 inventoryList.exportList(f);
             }
         } catch (Exception e) {
@@ -128,6 +136,7 @@ public class InventoryController implements Initializable {
         File file = fileChooser.showOpenDialog(table.getScene().getWindow());
         if (file != null) {
             try {
+                // call importFile
                 inventoryList.importFile(file);
             } catch (Exception e) {
                 inventoryList.clearList();
@@ -139,11 +148,13 @@ public class InventoryController implements Initializable {
 
     @FXML
     public void handleClear() {
+        // call clear list
         inventoryList.clearList();
         refreshItems();
         inputSerial.clear();
         inputName.clear();
         inputValue.clear();
+        // clear text fields
 
     }
 
@@ -153,6 +164,7 @@ public class InventoryController implements Initializable {
         serialNumber.setOnEditCommit(event -> {
             InventoryItem newItem = event.getRowValue();
             try {
+                // call setSerial
                 inventoryList.setSerialNumber(newItem, event.getNewValue());
             } catch (Exception e) {
                 popupError(e.getMessage());
@@ -167,6 +179,7 @@ public class InventoryController implements Initializable {
         itemName.setOnEditCommit(event -> {
             InventoryItem newItem = event.getRowValue();
             try {
+                // call setItemName
                 inventoryList.setItemName(newItem, event.getNewValue());
             } catch (Exception e) {
                 popupError(e.getMessage());
@@ -181,6 +194,7 @@ public class InventoryController implements Initializable {
         itemValue.setOnEditCommit(event -> {
             InventoryItem newItem = event.getRowValue();
             try {
+                // call setItemValue
                 inventoryList.setItemValue(newItem, event.getNewValue());
             } catch (Exception e) {
                 popupError(e.getMessage());
@@ -188,6 +202,7 @@ public class InventoryController implements Initializable {
             refreshItems();
         });
 
+        // Proper Sort comparator
         Comparator<String> itemComparator = (o1, o2) -> {
             String firstString = o1.substring(1);
             String secondString  = o2.substring(1);
@@ -200,15 +215,18 @@ public class InventoryController implements Initializable {
     }
 
     private void refreshItems() {
+        // refresh table
         table.setItems(inventoryList.getDataList());
         table.refresh();
     }
 
 
     private void popupError(String message) {
+        // Popup error
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Error");
         alert.setHeaderText(null);
+        // pass exception string
         alert.setContentText(message);
         alert.showAndWait();
     }
@@ -218,8 +236,11 @@ public class InventoryController implements Initializable {
         public void initialize(URL location, ResourceBundle resources) {
         inventoryList = new InventoryList();
         table.setEditable(true);
+        // set up serial edits
         setUpSerialNumber();
+        // set up name edits
         setUpItemName();
+        // set up value edits
         setUpItemValue();
         table.setItems(inventoryList.getDataList());
 

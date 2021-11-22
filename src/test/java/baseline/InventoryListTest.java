@@ -71,6 +71,7 @@ class InventoryListTest {
 
     @Test
     void setSerialNumberSuccess() {
+        // ensure serial is in proper format
         InventoryList testList = new InventoryList();
         testList.add("a-123-123-123", "test", "12");
         testList.add("b-123-123-123", "test", "14");
@@ -99,10 +100,12 @@ class InventoryListTest {
 
     @Test
     void searchList() {
+        // test search list
         InventoryList testList = new InventoryList();
         testList.add("a-123-123-123", "test", "12");
         testList.add("b-123-123-123", "test", "12");
         ObservableList<InventoryItem> searchList = testList.searchList("b", "", "");
+        // make sure search results match
         if (searchList.size() > 1)
             fail();
         else {
@@ -117,6 +120,7 @@ class InventoryListTest {
         testList.add("a-123-123-123", "test", "12");
         testList.add("b-123-123-123", "test", "12");
         testList.clearList();
+        // list should be empty
         assertEquals(0, testList.getDataList().size());
     }
 
@@ -271,11 +275,13 @@ class InventoryListTest {
     void importFileTSV() {
         InventoryList testList = new InventoryList();
         File file = new File("./src/test/data/TestTSV.txt");
+        // parse
         try {
             testList.importFile(file);
         } catch (Exception e) {
             fail();
         }
+        // test
         boolean flag = testList.getDataList().size() == 2;
         if (!testList.getDataList().get(0).compare(new InventoryItem("A-123-123-123", "one", "$12.67")))
             flag = false;
@@ -289,12 +295,16 @@ class InventoryListTest {
     @Test
     void importFileHTML() {
         InventoryList testList = new InventoryList();
+        // import
         File file = new File("./src/test/data/TestHTML.html");
+
+        //parse
         try {
             testList.importFile(file);
         } catch (Exception e) {
             fail();
         }
+        // test
         boolean flag = testList.getDataList().size() == 2;
         if (!testList.getDataList().get(0).compare(new InventoryItem("A-123-12S-21F", "one", "$8091.10")))
             flag = false;
@@ -308,12 +318,15 @@ class InventoryListTest {
     @Test
     void importFileJson() {
         InventoryList testList = new InventoryList();
+        // import
         File file = new File("./src/test/data/TestJson.json");
+        // parse
         try {
             testList.importFile(file);
         } catch (Exception e) {
             fail();
         }
+        // test
         boolean flag = testList.getDataList().size() == 2;
         if (!testList.getDataList().get(0).compare(new InventoryItem("X-123-12S-21F", "one", "$123.12")))
             flag = false;

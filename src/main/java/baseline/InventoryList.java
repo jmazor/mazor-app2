@@ -105,6 +105,7 @@ public class InventoryList {
 
     // determines file type and calls appropriate function
     public void exportList(File fileName) throws IOException {
+        // test file extension
         String tempPath = fileName.getCanonicalPath().toLowerCase();
         if (tempPath.endsWith(".txt"))
             exportTSV(fileName);

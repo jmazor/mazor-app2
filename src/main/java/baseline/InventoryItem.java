@@ -129,12 +129,15 @@ public class InventoryItem {
     }
 
     public boolean compare(InventoryItem item) {
+        // compare each value in item
         boolean flag = this.getSerialNumber().equals(item.getSerialNumber());
         if (!this.getItemValue().equals(item.getItemValue()))
             flag = false;
         if (!this.getItemName().equals(item.getItemName()))
             flag = false;
 
+
+        // return true if the same
         return flag;
     }
 

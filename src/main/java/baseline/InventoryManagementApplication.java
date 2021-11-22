@@ -47,6 +47,7 @@ public class InventoryManagementApplication extends javafx.application.Applicati
         }
 
 
+        // Confirm exit
         private EventHandler<WindowEvent> confirmCloseEventHandler = event -> {
             Alert closeConfirmation = new Alert(
                     Alert.AlertType.CONFIRMATION,
