@@ -78,7 +78,7 @@ public class InventoryList {
             searchList.removeIf(searchItem -> !searchItem.getItemName().toLowerCase(Locale.ROOT).contains(itemName.toLowerCase(Locale.ROOT)));
         }
 
-        if (!itemName.isBlank()) {
+        if (!itemValue.isBlank()) {
             searchList.removeIf(searchItem -> !searchItem.getItemValue().contains(itemValue));
         }
 
