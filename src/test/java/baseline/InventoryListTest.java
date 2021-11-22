@@ -17,6 +17,7 @@ class InventoryListTest {
     @Test
     void add() {
         InventoryList testList = new InventoryList();
+        // ensures item is added correctly
         InventoryItem item = new InventoryItem("a-123-123-123", "test", "12");
         testList.add("a-123-123-123", "test", "12");
         assertTrue(testList.getDataList().get(0).compare(item));
@@ -93,6 +94,7 @@ class InventoryListTest {
     @Test
     void setItemValue() {
         InventoryList testList = new InventoryList();
+        // ensures item was set properly
         testList.add("a-123-123-123", "test", "12");
         testList.setItemValue(testList.getDataList().get(0), "14.1");
         assertEquals("$14.10", testList.getDataList().get(0).getItemValue());
@@ -130,6 +132,7 @@ class InventoryListTest {
         testList.add("a-123-123-123", "test", "12");
         testList.add("b-123-123-123", "test", "12");
         testList.delete(testList.getDataList().get(0));
+        // ensures item has been removed
         if (testList.getDataList().size() != 1)
             fail();
         else {
@@ -144,6 +147,7 @@ class InventoryListTest {
         testList.add("a-123-123-123", "test", "12");
         testList.add("c-123-123-123", "junk", "12");
         File file = new File("./src/test/data/TempTSV.txt");
+        // creates TSV file
         try {
             testList.exportList(file);
         } catch (Exception e) {
@@ -175,6 +179,7 @@ class InventoryListTest {
         testList.add("a-123-123-123", "test", "12");
         testList.add("b-123-123-123", "test", "12");
         File file = new File("./src/test/data/TempHTML.html");
+        // creates HTML file
         try {
             testList.exportList(file);
         } catch (Exception e) {
@@ -234,6 +239,7 @@ class InventoryListTest {
         testList.add("a-123-123-123", "test", "12");
         testList.add("b-123-123-123", "test", "12");
         File file = new File("./src/test/data/TempJson.json");
+        // creates json file
         try {
             testList.exportList(file);
         } catch (Exception e) {
@@ -275,13 +281,13 @@ class InventoryListTest {
     void importFileTSV() {
         InventoryList testList = new InventoryList();
         File file = new File("./src/test/data/TestTSV.txt");
-        // parse
+        // parse TSV file
         try {
             testList.importFile(file);
         } catch (Exception e) {
             fail();
         }
-        // test
+        // test if list is correct
         boolean flag = testList.getDataList().size() == 2;
         if (!testList.getDataList().get(0).compare(new InventoryItem("A-123-123-123", "one", "$12.67")))
             flag = false;
@@ -295,16 +301,15 @@ class InventoryListTest {
     @Test
     void importFileHTML() {
         InventoryList testList = new InventoryList();
-        // import
+        // import HTML file
         File file = new File("./src/test/data/TestHTML.html");
-
-        //parse
+        // parse file and add to list
         try {
             testList.importFile(file);
         } catch (Exception e) {
             fail();
         }
-        // test
+        // test if list is correct
         boolean flag = testList.getDataList().size() == 2;
         if (!testList.getDataList().get(0).compare(new InventoryItem("A-123-12S-21F", "one", "$8091.10")))
             flag = false;
@@ -318,15 +323,15 @@ class InventoryListTest {
     @Test
     void importFileJson() {
         InventoryList testList = new InventoryList();
-        // import
+        // import json file
         File file = new File("./src/test/data/TestJson.json");
-        // parse
+        // parse file and add to list
         try {
             testList.importFile(file);
         } catch (Exception e) {
             fail();
         }
-        // test
+        // test if list is correct
         boolean flag = testList.getDataList().size() == 2;
         if (!testList.getDataList().get(0).compare(new InventoryItem("X-123-12S-21F", "one", "$123.12")))
             flag = false;
